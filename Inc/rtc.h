@@ -8,7 +8,6 @@
 #ifndef RTC_H_
 #define RTC_H_
 
-void Configure_RTC_Clock(void);
-void RTC_wakeup_init_from_standby_or_shutdown( int delay );
-void RTC_wakeup_init_from_stop( int delay );
+void RTC_Full_Setup(void);
+void Enter_Standby_mode(void);
 #endif /* RTC_H_ */

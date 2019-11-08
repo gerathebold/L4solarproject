@@ -1,4 +1,6 @@
-Src/main.o: ../Src/main.c \
+Src/taskTimeManage.o: ../Src/taskTimeManage.c \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_crs.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
@@ -11,7 +13,6 @@ Src/main.o: ../Src/main.c \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/stm32l4xx_hal_conf.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
@@ -40,9 +41,6 @@ Src/main.o: ../Src/main.c \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_pwr.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_dma.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -50,15 +48,13 @@ Src/main.o: ../Src/main.c \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/rtc.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/taskTimeManage.h
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/taskTimeManage.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_rtc.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/rtc.h
+
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h:
 
@@ -83,8 +79,6 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4x
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/stm32l4xx_hal_conf.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:
 
@@ -142,12 +136,6 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:
 
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h:
-
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
@@ -162,20 +150,8 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/taskTimeManage.h:
 
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_rtc.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/rtc.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/taskTimeManage.h:

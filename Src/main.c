@@ -50,7 +50,8 @@
 #include "main.h"
 #include "stm32l4xx_hal.h"
 #include "cmsis_os.h"
-
+#include "rtc.h"
+#include "taskTimeManage.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -105,6 +106,8 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
+  RTC_Full_Setup();
+  taskTimeManage_init();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -155,56 +158,40 @@ int main(void)
 */
 void SystemClock_Config(void)
 {
+	/* MSI configuration and activation */
+	LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
+	LL_RCC_MSI_Enable();
+	while(LL_RCC_MSI_IsReady() != 1)
+	{
+	};
 
-  LL_FLASH_SetLatency(LL_FLASH_LATENCY_3);
+	/* Main PLL configuration and activation */
+	LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 40, LL_RCC_PLLR_DIV_2);
+	LL_RCC_PLL_Enable();
+	LL_RCC_PLL_EnableDomain_SYS();
+	while(LL_RCC_PLL_IsReady() != 1)
+	{
+	};
 
-  if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_3)
-  {
-  Error_Handler();  
-  }
-  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+	/* Sysclk activation on the main PLL */
+	LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+	LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+	while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+	{
+	};
 
-  LL_RCC_HSI_Enable();
+	/* Set APB1 & APB2 prescaler*/
+	LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+	LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
 
-   /* Wait till HSI is ready */
-  while(LL_RCC_HSI_IsReady() != 1)
-  {
-    
-  }
-  LL_RCC_HSI_SetCalibTrimming(16);
+	/* Set systick to 1ms in using frequency set to 80MHz */
+	/* This frequency can be calculated through LL RCC macro */
+	/* ex: __LL_RCC_CALC_PLLCLK_FREQ(__LL_RCC_CALC_MSI_FREQ(LL_RCC_MSIRANGESEL_RUN, LL_RCC_MSIRANGE_6),
+	                                  LL_RCC_PLLM_DIV_1, 40, LL_RCC_PLLR_DIV_2)*/
+	LL_Init1msTick(80000000);
 
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_1, 10, LL_RCC_PLLR_DIV_2);
-
-  LL_RCC_PLL_EnableDomain_SYS();
-
-  LL_RCC_PLL_Enable();
-
-   /* Wait till PLL is ready */
-  while(LL_RCC_PLL_IsReady() != 1)
-  {
-    
-  }
-  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-
-   /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-  {
-  
-  }
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-
-  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-
-  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
-
-  LL_Init1msTick(80000000);
-
-  LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);
-
-  LL_SetSystemCoreClock(80000000);
-
-  /* SysTick_IRQn interrupt configuration */
-  NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),15, 0));
+	/* Update CMSIS variable (which can be updated also through SystemCoreClockUpdate function) */
+	LL_SetSystemCoreClock(80000000);
 }
 
 /** Configure pins as 
