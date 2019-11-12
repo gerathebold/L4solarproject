@@ -50,13 +50,16 @@
 #include "main.h"
 #include "stm32l4xx_hal.h"
 #include "cmsis_os.h"
-#include "rtc.h"
 #include "taskTimeManage.h"
+#include "rtc.h"
+#include "time.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+RTC_HandleTypeDef hrtc;
+
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN PV */
@@ -67,6 +70,7 @@ osThreadId defaultTaskHandle;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_RTC_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -81,76 +85,83 @@ void StartDefaultTask(void const * argument);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
+	time_t rawtime;
+	struct tm * timeinfo;
 
-  /* USER CODE END 1 */
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
 
-  /* MCU Configuration----------------------------------------------------------*/
+	/* USER CODE BEGIN 1 */
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* USER CODE END 1 */
 
-  /* USER CODE BEGIN Init */
+	/* MCU Configuration----------------------------------------------------------*/
 
-  /* USER CODE END Init */
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE BEGIN SysInit */
+	/* USER CODE END Init */
 
-  /* USER CODE END SysInit */
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+	/* USER CODE BEGIN SysInit */
 
-  /* USER CODE BEGIN 2 */
+	/* USER CODE END SysInit */
 
-  RTC_Full_Setup();
-  taskTimeManage_init();
-  /* USER CODE END 2 */
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_RTC_Init();
+	//RTC_Full_Setup();
+	/* USER CODE BEGIN 2 */
 
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
+	//RTC_Full_Setup();
+	taskTimeManage_init();
+	/* USER CODE END 2 */
 
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
+	/* USER CODE BEGIN RTOS_MUTEX */
+	/* add mutexes, ... */
+	/* USER CODE END RTOS_MUTEX */
 
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
+	/* USER CODE BEGIN RTOS_SEMAPHORES */
+	/* add semaphores, ... */
+	/* USER CODE END RTOS_SEMAPHORES */
 
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+	/* USER CODE BEGIN RTOS_TIMERS */
+	/* start timers, add new ones, ... */
+	/* USER CODE END RTOS_TIMERS */
 
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
+	/* Create the thread(s) */
+	/* definition and creation of defaultTask */
+	osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
- 
+	/* USER CODE BEGIN RTOS_THREADS */
+	/* add threads, ... */
+	/* USER CODE END RTOS_THREADS */
 
-  /* Start scheduler */
-  osKernelStart();
-  
-  /* We should never get here as control is now taken by the scheduler */
+	/* USER CODE BEGIN RTOS_QUEUES */
+	/* add queues, ... */
+	/* USER CODE END RTOS_QUEUES */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-  /* USER CODE END WHILE */
+	/* Start scheduler */
+	osKernelStart();
 
-  /* USER CODE BEGIN 3 */
+	/* We should never get here as control is now taken by the scheduler */
 
-  }
-  /* USER CODE END 3 */
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
+	while (1)
+	{
+		/* USER CODE END WHILE */
+
+
+		/* USER CODE BEGIN 3 */
+
+	}
+	/* USER CODE END 3 */
 
 }
 
@@ -158,40 +169,125 @@ int main(void)
 */
 void SystemClock_Config(void)
 {
-	/* MSI configuration and activation */
-	LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
-	LL_RCC_MSI_Enable();
-	while(LL_RCC_MSI_IsReady() != 1)
-	{
-	};
 
-	/* Main PLL configuration and activation */
-	LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 40, LL_RCC_PLLR_DIV_2);
-	LL_RCC_PLL_Enable();
-	LL_RCC_PLL_EnableDomain_SYS();
-	while(LL_RCC_PLL_IsReady() != 1)
-	{
-	};
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_3);
 
-	/* Sysclk activation on the main PLL */
-	LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-	LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-	while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-	{
-	};
+  if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_3)
+  {
+  Error_Handler();  
+  }
+  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
 
-	/* Set APB1 & APB2 prescaler*/
-	LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-	LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+  LL_RCC_HSI_Enable();
 
-	/* Set systick to 1ms in using frequency set to 80MHz */
-	/* This frequency can be calculated through LL RCC macro */
-	/* ex: __LL_RCC_CALC_PLLCLK_FREQ(__LL_RCC_CALC_MSI_FREQ(LL_RCC_MSIRANGESEL_RUN, LL_RCC_MSIRANGE_6),
-	                                  LL_RCC_PLLM_DIV_1, 40, LL_RCC_PLLR_DIV_2)*/
-	LL_Init1msTick(80000000);
+   /* Wait till HSI is ready */
+  while(LL_RCC_HSI_IsReady() != 1)
+  {
+    
+  }
+  LL_RCC_HSI_SetCalibTrimming(16);
 
-	/* Update CMSIS variable (which can be updated also through SystemCoreClockUpdate function) */
-	LL_SetSystemCoreClock(80000000);
+  LL_PWR_EnableBkUpAccess();
+
+  LL_RCC_ForceBackupDomainReset();
+
+  LL_RCC_ReleaseBackupDomainReset();
+
+  LL_RCC_LSE_SetDriveCapability(LL_RCC_LSEDRIVE_LOW);
+
+  LL_RCC_LSE_Enable();
+
+   /* Wait till LSE is ready */
+  while(LL_RCC_LSE_IsReady() != 1)
+  {
+    
+  }
+  LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+
+  LL_RCC_EnableRTC();
+
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_1, 10, LL_RCC_PLLR_DIV_2);
+
+  LL_RCC_PLL_EnableDomain_SYS();
+
+  LL_RCC_PLL_Enable();
+
+   /* Wait till PLL is ready */
+  while(LL_RCC_PLL_IsReady() != 1)
+  {
+    
+  }
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+
+   /* Wait till System clock is ready */
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+  {
+  
+  }
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+
+  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+
+  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+
+  LL_Init1msTick(80000000);
+
+  LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);
+
+  LL_SetSystemCoreClock(80000000);
+
+  /* SysTick_IRQn interrupt configuration */
+  NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),15, 0));
+}
+
+/* RTC init function */
+static void MX_RTC_Init(void)
+{
+
+  RTC_TimeTypeDef sTime;
+  RTC_DateTypeDef sDate;
+
+    /**Initialize RTC Only 
+    */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Initialize RTC and set the Time and Date 
+    */
+  if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
+  sTime.Hours = 0x14;
+  sTime.Minutes = 0x45;
+  sTime.Seconds = 0x55;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sDate.WeekDay = RTC_WEEKDAY_FRIDAY;
+  sDate.Month = RTC_MONTH_NOVEMBER;
+  sDate.Date = 0x1;
+  sDate.Year = 0x19;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
+  }
+
 }
 
 /** Configure pins as 

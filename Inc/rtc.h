@@ -10,4 +10,5 @@
 
 void RTC_Full_Setup(void);
 void Enter_Standby_mode(void);
+void StandByMode(uint32_t SleepTime);
 #endif /* RTC_H_ */
