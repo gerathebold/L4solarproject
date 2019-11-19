@@ -20,6 +20,8 @@
 #include "rtc.h"
 #include <time.h>
 
+_Bool test_flag = true;
+
 /*private defines*/
 typedef enum{
 	JANUARY,
@@ -41,6 +43,7 @@ uint32_t SleepTimeMinutes[12] = {20, 15, 56, 30, 15, 30, 30, 40, 00, 05, 25, 50}
 
 uint32_t WakeUpTimeHour[12] = {8,  7,  7,  7,  6,  6,  6,  7,  7,  8,  7,  8};
 uint32_t WakeUpMinutes[12] = {35, 50, 00, 15, 30, 20, 30, 05, 30, 15, 50, 40};
+
 
 /*private prototypes*/
 void taskTimeManage_task(void * pvParametersid);
@@ -131,4 +134,7 @@ void taskTimeManage_task(void * pvParameters ){
 
 		vTaskDelay(100);
 	}
+
+
 }
+

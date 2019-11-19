@@ -6,34 +6,40 @@
 C_SRCS += \
 ../Src/clock.c \
 ../Src/freertos.c \
+../Src/i2c.c \
 ../Src/main.c \
 ../Src/rtc.c \
 ../Src/stm32l4xx_hal_msp.c \
 ../Src/stm32l4xx_hal_timebase_TIM.c \
 ../Src/stm32l4xx_it.c \
 ../Src/system_stm32l4xx.c \
+../Src/taskI2CManage.c \
 ../Src/taskTimeManage.c 
 
 OBJS += \
 ./Src/clock.o \
 ./Src/freertos.o \
+./Src/i2c.o \
 ./Src/main.o \
 ./Src/rtc.o \
 ./Src/stm32l4xx_hal_msp.o \
 ./Src/stm32l4xx_hal_timebase_TIM.o \
 ./Src/stm32l4xx_it.o \
 ./Src/system_stm32l4xx.o \
+./Src/taskI2CManage.o \
 ./Src/taskTimeManage.o 
 
 C_DEPS += \
 ./Src/clock.d \
 ./Src/freertos.d \
+./Src/i2c.d \
 ./Src/main.d \
 ./Src/rtc.d \
 ./Src/stm32l4xx_hal_msp.d \
 ./Src/stm32l4xx_hal_timebase_TIM.d \
 ./Src/stm32l4xx_it.d \
 ./Src/system_stm32l4xx.d \
+./Src/taskI2CManage.d \
 ./Src/taskTimeManage.d 
 
 
