@@ -4,43 +4,49 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/clock.c \
 ../Src/freertos.c \
-../Src/i2c.c \
 ../Src/main.c \
 ../Src/rtc.c \
 ../Src/stm32l4xx_hal_msp.c \
 ../Src/stm32l4xx_hal_timebase_TIM.c \
 ../Src/stm32l4xx_it.c \
 ../Src/system_stm32l4xx.c \
-../Src/taskI2CManage.c \
-../Src/taskTimeManage.c 
+../Src/taskBMScommunication.c \
+../Src/taskBattConfig.c \
+../Src/taskBuckControl.c \
+../Src/taskEEPROMManage.c \
+../Src/taskMainStateMachine.c \
+../Src/taskSleepManage.c 
 
 OBJS += \
-./Src/clock.o \
 ./Src/freertos.o \
-./Src/i2c.o \
 ./Src/main.o \
 ./Src/rtc.o \
 ./Src/stm32l4xx_hal_msp.o \
 ./Src/stm32l4xx_hal_timebase_TIM.o \
 ./Src/stm32l4xx_it.o \
 ./Src/system_stm32l4xx.o \
-./Src/taskI2CManage.o \
-./Src/taskTimeManage.o 
+./Src/taskBMScommunication.o \
+./Src/taskBattConfig.o \
+./Src/taskBuckControl.o \
+./Src/taskEEPROMManage.o \
+./Src/taskMainStateMachine.o \
+./Src/taskSleepManage.o 
 
 C_DEPS += \
-./Src/clock.d \
 ./Src/freertos.d \
-./Src/i2c.d \
 ./Src/main.d \
 ./Src/rtc.d \
 ./Src/stm32l4xx_hal_msp.d \
 ./Src/stm32l4xx_hal_timebase_TIM.d \
 ./Src/stm32l4xx_it.d \
 ./Src/system_stm32l4xx.d \
-./Src/taskI2CManage.d \
-./Src/taskTimeManage.d 
+./Src/taskBMScommunication.d \
+./Src/taskBattConfig.d \
+./Src/taskBuckControl.d \
+./Src/taskEEPROMManage.d \
+./Src/taskMainStateMachine.d \
+./Src/taskSleepManage.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

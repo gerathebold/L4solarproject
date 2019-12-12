@@ -3,6 +3,7 @@ Middlewares/Third_Party/FreeRTOS/Source/queue.o: \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_adc.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Include/core_cm4.h \
@@ -30,8 +31,6 @@ Middlewares/Third_Party/FreeRTOS/Source/queue.o: \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h \
- C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_i2c.h \
@@ -44,6 +43,8 @@ Middlewares/Third_Party/FreeRTOS/Source/queue.o: \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_utils.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_pwr.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_dma.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_rtc.h \
+ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_tim.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
@@ -59,6 +60,8 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Middlewares/Third_Party/FreeRTOS
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/FreeRTOSConfig.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Inc/main.h:
+
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_adc.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
 
@@ -114,10 +117,6 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
-
-C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
-
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
@@ -141,6 +140,10 @@ C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_pwr.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_dma.h:
+
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_rtc.h:
+
+C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_tim.h:
 
 C:/Users/Gerardo/workbench-workspace/L4FreeRTOS/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:
 

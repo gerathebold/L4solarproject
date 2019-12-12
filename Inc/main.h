@@ -49,6 +49,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
   /* Includes ------------------------------------------------------------------*/
+#include "stm32l4xx_ll_adc.h"
 #include "stm32l4xx.h"
 #include "stm32l4xx_ll_i2c.h"
 #include "stm32l4xx_ll_crs.h"
@@ -60,6 +61,8 @@
 #include "stm32l4xx_ll_utils.h"
 #include "stm32l4xx_ll_pwr.h"
 #include "stm32l4xx_ll_dma.h"
+#include "stm32l4xx_ll_rtc.h"
+#include "stm32l4xx_ll_tim.h"
 #include "stm32l4xx_ll_gpio.h"
 
 /* Includes ------------------------------------------------------------------*/

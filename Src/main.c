@@ -50,16 +50,12 @@
 #include "main.h"
 #include "stm32l4xx_hal.h"
 #include "cmsis_os.h"
-#include "taskI2CManage.h"
-#include "taskTimeManage.h"
 
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-
-RTC_HandleTypeDef hrtc;
 
 osThreadId defaultTaskHandle;
 
@@ -73,6 +69,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_RTC_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_TIM2_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -110,14 +108,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_RTC_Init();
-  //MX_I2C1_Init();
-  config_master();
-  config_slave();
+  MX_I2C1_Init();
+  MX_ADC1_Init();
+  MX_TIM2_Init();
+
   /* USER CODE BEGIN 2 */
 
 	//RTC_Full_Setup();
-	taskTimeManage_init();
-	taskI2CManage_init();
+	//taskTimeManage_init();
+	//taskI2CManage_init();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -218,6 +217,17 @@ void SystemClock_Config(void)
   {
     
   }
+  LL_RCC_PLLSAI1_ConfigDomain_ADC(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_1, 8, LL_RCC_PLLSAI1R_DIV_2);
+
+  LL_RCC_PLLSAI1_EnableDomain_ADC();
+
+  LL_RCC_PLLSAI1_Enable();
+
+   /* Wait till PLLSAI1 is ready */
+  while(LL_RCC_PLLSAI1_IsReady() != 1)
+  {
+    
+  }
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
    /* Wait till System clock is ready */
@@ -239,8 +249,71 @@ void SystemClock_Config(void)
 
   LL_RCC_SetI2CClockSource(LL_RCC_I2C1_CLKSOURCE_PCLK1);
 
+  LL_RCC_SetADCClockSource(LL_RCC_ADC_CLKSOURCE_PLLSAI1);
+
   /* SysTick_IRQn interrupt configuration */
   NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),15, 0));
+}
+
+/* ADC1 init function */
+static void MX_ADC1_Init(void)
+{
+
+  LL_ADC_InitTypeDef ADC_InitStruct;
+  LL_ADC_REG_InitTypeDef ADC_REG_InitStruct;
+  LL_ADC_CommonInitTypeDef ADC_CommonInitStruct;
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct;
+
+  /* Peripheral clock enable */
+  LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_ADC);
+  
+  /**ADC1 GPIO Configuration  
+  PC0   ------> ADC1_IN1
+  PC1   ------> ADC1_IN2
+  PC2   ------> ADC1_IN3
+  PC3   ------> ADC1_IN4 
+  */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2|LL_GPIO_PIN_3;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  LL_GPIO_EnablePinAnalogControl(GPIOC, LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2|LL_GPIO_PIN_3);
+
+    /**Common config 
+    */
+  ADC_InitStruct.Resolution = LL_ADC_RESOLUTION_12B;
+  ADC_InitStruct.DataAlignment = LL_ADC_DATA_ALIGN_RIGHT;
+  ADC_InitStruct.LowPowerMode = LL_ADC_LP_MODE_NONE;
+  LL_ADC_Init(ADC1, &ADC_InitStruct);
+
+  ADC_REG_InitStruct.TriggerSource = LL_ADC_REG_TRIG_SOFTWARE;
+  ADC_REG_InitStruct.SequencerLength = LL_ADC_REG_SEQ_SCAN_DISABLE;
+  ADC_REG_InitStruct.SequencerDiscont = LL_ADC_REG_SEQ_DISCONT_DISABLE;
+  ADC_REG_InitStruct.ContinuousMode = LL_ADC_REG_CONV_SINGLE;
+  ADC_REG_InitStruct.DMATransfer = LL_ADC_REG_DMA_TRANSFER_LIMITED;
+  ADC_REG_InitStruct.Overrun = LL_ADC_REG_OVR_DATA_PRESERVED;
+  LL_ADC_REG_Init(ADC1, &ADC_REG_InitStruct);
+
+  LL_ADC_SetOverSamplingScope(ADC1, LL_ADC_OVS_DISABLE);
+
+  ADC_CommonInitStruct.CommonClock = LL_ADC_CLOCK_ASYNC_DIV1;
+  ADC_CommonInitStruct.Multimode = LL_ADC_MULTI_INDEPENDENT;
+  LL_ADC_CommonInit(__LL_ADC_COMMON_INSTANCE(ADC1), &ADC_CommonInitStruct);
+
+  LL_ADC_EnableIT_EOC(ADC1);
+
+  LL_ADC_DisableIT_EOS(ADC1);
+
+    /**Configure Regular Channel 
+    */
+  LL_ADC_REG_SetSequencerRanks(ADC1, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_1);
+
+  LL_ADC_SetChannelSamplingTime(ADC1, LL_ADC_CHANNEL_1, LL_ADC_SAMPLINGTIME_2CYCLES_5);
+
+  LL_ADC_SetChannelSingleDiff(ADC1, LL_ADC_CHANNEL_1, LL_ADC_SINGLE_ENDED);
+
 }
 
 /* I2C1 init function */
@@ -287,61 +360,99 @@ static void MX_I2C1_Init(void)
 
   LL_I2C_EnableClockStretching(I2C1);
 
-  /*---------------- Configuration des IT I2C ----------------*/
-  	// Activation IT sur erreur
-  	LL_I2C_EnableIT_ERR(I2C1);
-  	// Activation IT reception (event et buff)
-  	LL_I2C_EnableIT_RX(I2C1);
-
 }
 
 /* RTC init function */
 static void MX_RTC_Init(void)
 {
 
-  RTC_TimeTypeDef sTime;
-  RTC_DateTypeDef sDate;
+  LL_RTC_InitTypeDef RTC_InitStruct;
+  LL_RTC_TimeTypeDef RTC_TimeStruct;
+  LL_RTC_DateTypeDef RTC_DateStruct;
 
-    /**Initialize RTC Only 
-    */
-  hrtc.Instance = RTC;
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 127;
-  hrtc.Init.SynchPrediv = 255;
-  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
-  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+  /* Peripheral clock enable */
+  LL_RCC_EnableRTC();
 
     /**Initialize RTC and set the Time and Date 
     */
-  if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
+  RTC_InitStruct.HourFormat = LL_RTC_HOURFORMAT_24HOUR;
+  RTC_InitStruct.AsynchPrescaler = 127;
+  RTC_InitStruct.SynchPrescaler = 255;
+  LL_RTC_Init(RTC, &RTC_InitStruct);
+
+    /**Initialize RTC and set the Time and Date 
+    */
+
+  if(LL_RTC_BAK_GetRegister(RTC, LL_RTC_BKP_DR0) != 0x32F2){
+  
+  RTC_TimeStruct.Hours = 0;
+  RTC_TimeStruct.Minutes = 0;
+  RTC_TimeStruct.Seconds = 0;
+  LL_RTC_TIME_Init(RTC, LL_RTC_FORMAT_BCD, &RTC_TimeStruct);
+
+  RTC_DateStruct.WeekDay = LL_RTC_WEEKDAY_MONDAY;
+  RTC_DateStruct.Month = LL_RTC_MONTH_JANUARY;
+  RTC_DateStruct.Year = 0;
+  LL_RTC_DATE_Init(RTC, LL_RTC_FORMAT_BCD, &RTC_DateStruct);
+
+    LL_RTC_BAK_SetRegister(RTC,LL_RTC_BKP_DR0,0x32F2);
   }
 
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
-  sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 0x1;
-  sDate.Year = 0x0;
+}
 
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+/* TIM2 init function */
+static void MX_TIM2_Init(void)
+{
 
-    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
-  }
+  LL_TIM_InitTypeDef TIM_InitStruct;
+  LL_TIM_OC_InitTypeDef TIM_OC_InitStruct;
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct;
+
+  /* Peripheral clock enable */
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
+
+  TIM_InitStruct.Prescaler = 0;
+  TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
+  TIM_InitStruct.Autoreload = 0;
+  TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
+  LL_TIM_Init(TIM2, &TIM_InitStruct);
+
+  LL_TIM_DisableARRPreload(TIM2);
+
+  LL_TIM_SetClockSource(TIM2, LL_TIM_CLOCKSOURCE_INTERNAL);
+
+  LL_TIM_OC_EnablePreload(TIM2, LL_TIM_CHANNEL_CH1);
+
+  TIM_OC_InitStruct.OCMode = LL_TIM_OCMODE_PWM1;
+  TIM_OC_InitStruct.OCState = LL_TIM_OCSTATE_DISABLE;
+  TIM_OC_InitStruct.OCNState = LL_TIM_OCSTATE_DISABLE;
+  TIM_OC_InitStruct.CompareValue = 0;
+  TIM_OC_InitStruct.OCPolarity = LL_TIM_OCPOLARITY_HIGH;
+  LL_TIM_OC_Init(TIM2, LL_TIM_CHANNEL_CH1, &TIM_OC_InitStruct);
+
+  LL_TIM_OC_DisableFast(TIM2, LL_TIM_CHANNEL_CH1);
+
+  LL_TIM_SetOCRefClearInputSource(TIM2, LL_TIM_OCREF_CLR_INT_NC);
+
+  LL_TIM_DisableExternalClock(TIM2);
+
+  LL_TIM_ConfigETR(TIM2, LL_TIM_ETR_POLARITY_NONINVERTED, LL_TIM_ETR_PRESCALER_DIV1, LL_TIM_ETR_FILTER_FDIV1);
+
+  LL_TIM_SetTriggerOutput(TIM2, LL_TIM_TRGO_RESET);
+
+  LL_TIM_DisableMasterSlaveMode(TIM2);
+
+  /**TIM2 GPIO Configuration  
+  PA0   ------> TIM2_CH1 
+  */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_0;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Alternate = LL_GPIO_AF_1;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
 
@@ -357,8 +468,8 @@ static void MX_RTC_Init(void)
 static void MX_GPIO_Init(void)
 {
 
-  LL_GPIO_InitTypeDef GPIO_InitStruct;
   LL_EXTI_InitTypeDef EXTI_InitStruct;
+  LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
   LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOC);
