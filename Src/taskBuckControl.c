@@ -6,6 +6,8 @@
  */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "globalInfo.h"
+#include "ADCDriver.h"
 
 /*Private prototype*/
 void taskBuckControl_task(void * pvParameters);
@@ -23,9 +25,14 @@ void taskBuckControl_init(void){
 
 void taskBuckControl_task(void * pvParameters){
 
+	volatile uint32_t voltage1 = 0;
+	volatile uint32_t voltage2 = 0;
+	volatile uint32_t current = 0;
 
 	while(1){
-
+		voltage1 = DriverStartADC1ConverionChannel1();
+		voltage2 = DriverStartADC1ConverionChannel4();
+		current = DriverStartADC1ConverionChannel3();
 		vTaskDelay(1000);
 	}
 }

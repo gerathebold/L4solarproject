@@ -7,19 +7,11 @@
 #include <taskSleepManage.h>
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stm32l4xx_ll_bus.h"
-#include "stm32l4xx_ll_rcc.h"
-#include "stm32l4xx_ll_system.h"
-#include "stm32l4xx_ll_utils.h"
-#include "stm32l4xx_ll_gpio.h"
 #include "stdbool.h"
-#include "stm32l4xx_ll_cortex.h"
-#include "stm32l4xx_ll_pwr.h"
 #include "stm32l4xx_ll_rtc.h"
-#include "stm32l4xx_ll_exti.h"
-#include "rtc.h"
 #include "globalInfo.h"
 #include "semphr.h"
+#include "RTCServiceLayer.h"
 #include <time.h>
 
 _Bool test_flag = true;

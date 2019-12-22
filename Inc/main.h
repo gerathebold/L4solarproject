@@ -49,9 +49,6 @@
 #ifndef __MAIN_H
 #define __MAIN_H
   /* Includes ------------------------------------------------------------------*/
-#include "stm32l4xx_ll_adc.h"
-#include "stm32l4xx.h"
-#include "stm32l4xx_ll_i2c.h"
 #include "stm32l4xx_ll_crs.h"
 #include "stm32l4xx_ll_rcc.h"
 #include "stm32l4xx_ll_bus.h"
@@ -62,7 +59,6 @@
 #include "stm32l4xx_ll_pwr.h"
 #include "stm32l4xx_ll_dma.h"
 #include "stm32l4xx_ll_rtc.h"
-#include "stm32l4xx_ll_tim.h"
 #include "stm32l4xx_ll_gpio.h"
 
 /* Includes ------------------------------------------------------------------*/
@@ -72,20 +68,18 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define B1_Pin LL_GPIO_PIN_13
+#define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define USART_TX_Pin LL_GPIO_PIN_2
+#define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
-#define USART_RX_Pin LL_GPIO_PIN_3
+#define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
-#define LD2_Pin LL_GPIO_PIN_5
+#define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
-#define TMS_Pin LL_GPIO_PIN_13
+#define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
-#define TCK_Pin LL_GPIO_PIN_14
+#define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
-#define SWO_Pin LL_GPIO_PIN_3
-#define SWO_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

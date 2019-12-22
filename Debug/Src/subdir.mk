@@ -4,9 +4,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/ADCDriver.c \
+../Src/BuckServiceLayer.c \
+../Src/GPIODriver.c \
+../Src/HMIServiceLayer.c \
+../Src/I2CDriver.c \
+../Src/RTCDriver.c \
+../Src/RTCServiceLayer.c \
+../Src/SPIDriver.c \
+../Src/SwitchCircuitServiceLayer.c \
+../Src/TimerDriver.c \
 ../Src/freertos.c \
 ../Src/main.c \
-../Src/rtc.c \
 ../Src/stm32l4xx_hal_msp.c \
 ../Src/stm32l4xx_hal_timebase_TIM.c \
 ../Src/stm32l4xx_it.c \
@@ -15,13 +24,23 @@ C_SRCS += \
 ../Src/taskBattConfig.c \
 ../Src/taskBuckControl.c \
 ../Src/taskEEPROMManage.c \
+../Src/taskHMI.c \
 ../Src/taskMainStateMachine.c \
 ../Src/taskSleepManage.c 
 
 OBJS += \
+./Src/ADCDriver.o \
+./Src/BuckServiceLayer.o \
+./Src/GPIODriver.o \
+./Src/HMIServiceLayer.o \
+./Src/I2CDriver.o \
+./Src/RTCDriver.o \
+./Src/RTCServiceLayer.o \
+./Src/SPIDriver.o \
+./Src/SwitchCircuitServiceLayer.o \
+./Src/TimerDriver.o \
 ./Src/freertos.o \
 ./Src/main.o \
-./Src/rtc.o \
 ./Src/stm32l4xx_hal_msp.o \
 ./Src/stm32l4xx_hal_timebase_TIM.o \
 ./Src/stm32l4xx_it.o \
@@ -30,13 +49,23 @@ OBJS += \
 ./Src/taskBattConfig.o \
 ./Src/taskBuckControl.o \
 ./Src/taskEEPROMManage.o \
+./Src/taskHMI.o \
 ./Src/taskMainStateMachine.o \
 ./Src/taskSleepManage.o 
 
 C_DEPS += \
+./Src/ADCDriver.d \
+./Src/BuckServiceLayer.d \
+./Src/GPIODriver.d \
+./Src/HMIServiceLayer.d \
+./Src/I2CDriver.d \
+./Src/RTCDriver.d \
+./Src/RTCServiceLayer.d \
+./Src/SPIDriver.d \
+./Src/SwitchCircuitServiceLayer.d \
+./Src/TimerDriver.d \
 ./Src/freertos.d \
 ./Src/main.d \
-./Src/rtc.d \
 ./Src/stm32l4xx_hal_msp.d \
 ./Src/stm32l4xx_hal_timebase_TIM.d \
 ./Src/stm32l4xx_it.d \
@@ -45,6 +74,7 @@ C_DEPS += \
 ./Src/taskBattConfig.d \
 ./Src/taskBuckControl.d \
 ./Src/taskEEPROMManage.d \
+./Src/taskHMI.d \
 ./Src/taskMainStateMachine.d \
 ./Src/taskSleepManage.d 
 

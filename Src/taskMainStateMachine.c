@@ -1,6 +1,5 @@
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stm32l4xx_ll_i2c.h"
 #include "globalInfo.h"
 #include "semphr.h"
 

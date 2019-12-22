@@ -8,6 +8,7 @@
 #ifndef GLOBALINFO_H_
 #define GLOBALINFO_H_
 
+#include "FreeRTOS.h"
 #include "semphr.h"
 
 typedef enum{
@@ -35,6 +36,7 @@ typedef enum{
 	SATURDAY,
 	SUNDAY,
 }day_of_the_week;
+
 
 /* flag equals to 0 if weekday, else 1*/
 _Bool DayofTheWeekflag;
@@ -65,12 +67,13 @@ _Bool Bat1, Bat2;
 _Bool Parallel, Series;
 _Bool XPow;
 
-
-
 _Bool modeHasChangedBattConf;
 
 SemaphoreHandle_t xBMSSemaphore;
 SemaphoreHandle_t xEEPROMSemaphore;
 SemaphoreHandle_t xSleepSemaphore;
+
+uint32_t ADC1buffer[2];
+uint32_t ADC2buffer[1];
 
 #endif /* GLOBALINFO_H_ */
